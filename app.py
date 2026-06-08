@@ -8,8 +8,7 @@ from build_history import build_history
 from build_monthly_history import build_monthly_history
 from export import export_history
 
-st.set_page_config(
-    page_title="MTF History Builder",
+st.set_page_config(    page_title="MTF History Builder",
     layout="centered"
 )
 
@@ -21,13 +20,21 @@ st.markdown(
 
 today = date.today()
 
+# NSE usually lags by ~2 trading days
+# Using 4 calendar days is safer around weekends
+
+latest_available_date = (
+    today - timedelta(days=4)
+)
+
 default_start = (
-    today - timedelta(days=90)
+    latest_available_date
+    - timedelta(days=90)
 ).strftime("%d-%m-%Y")
 
-default_end = today.strftime(
-    "%d-%m-%Y"
-)
+default_end = (
+    latest_available_date
+).strftime("%d-%m-%Y")
 
 frequency = st.selectbox(
     "Frequency",
@@ -115,7 +122,7 @@ if st.button(
 
             start_date = (
                 start_date
-                - timedelta(days=40)
+                - timedelta(days=75)
             )
 
     except ValueError:

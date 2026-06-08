@@ -63,7 +63,23 @@ def export_history(
                 .sort_values()
             )
 
+            print(
+                f"Unique Trading Dates Available: {len(daily_dates)}"
+            )
+
             last_90_dates = daily_dates.tail(90)
+
+            print(
+                f"Trading Dates Selected: {len(last_90_dates)}"
+            )
+
+            print(
+                f"First Trading Date: {last_90_dates.min()}"
+            )
+
+            print(
+                f"Last Trading Date: {last_90_dates.max()}"
+            )
 
             final_df = final_df[
                 final_df["Date"].isin(
@@ -137,9 +153,8 @@ def export_history(
     )
 
     output_file = (
-        f"output/"
         f"mrg_trading_"
-        f"{frequency.capitalize()}_"
+        f"{frequency}_"
         f"{start_date}_to_"
         f"{end_date}_"
         f"{timestamp}.xlsx"
