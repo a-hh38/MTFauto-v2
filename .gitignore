@@ -1,0 +1,24 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Data
+data/raw/
+data/processed/
+
+# Outputs
+output/
+*.xlsx
+
+# Parquet
+*.parquet
+
+# Temp Excel files
+~$*.xlsx
+
+# Streamlit
+.streamlit/
+
+# OS
+.DS_Store
