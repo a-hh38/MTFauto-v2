@@ -1,3 +1,7 @@
+*.xlsx
+*.csv
+*.zip
+
 data/raw/*
 data/processed/*
 output/*
