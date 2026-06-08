@@ -10,6 +10,10 @@ from build_history import build_history
 from build_monthly_history import build_monthly_history
 from export import export_history
 
+st.sidebar.success(
+    "MTF V2 CLEAN DEPLOY"
+)
+
 st.set_page_config(
     page_title="MTF History Builder",
     layout="centered"
