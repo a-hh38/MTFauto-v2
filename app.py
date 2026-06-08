@@ -8,7 +8,8 @@ from build_history import build_history
 from build_monthly_history import build_monthly_history
 from export import export_history
 
-st.set_page_config(    page_title="MTF History Builder",
+st.set_page_config(
+    page_title="MTF History Builder",
     layout="centered"
 )
 
@@ -20,9 +21,7 @@ st.markdown(
 
 today = date.today()
 
-# NSE usually lags by ~2 trading days
-# Using 4 calendar days is safer around weekends
-
+# NSE data generally lags by a couple of trading days
 latest_available_date = (
     today - timedelta(days=4)
 )
@@ -51,7 +50,7 @@ frequency = st.selectbox(
 if frequency == "Daily":
 
     use_default = st.checkbox(
-        "Use Default Last 90 Trading Days",
+        "Use Default Last 90 Days",
         value=True
     )
 
@@ -114,17 +113,6 @@ if st.button(
             "%d-%m-%Y"
         )
 
-        # Hidden buffer for Daily mode
-        if (
-            frequency == "Daily"
-            and use_default
-        ):
-
-            start_date = (
-                start_date
-                - timedelta(days=75)
-            )
-
     except ValueError:
 
         st.error(
@@ -182,7 +170,7 @@ if st.button(
         st.download_button(
             label="Download Excel Report",
             data=file,
-            file_name=output_file.split("\\")[-1],
+            file_name=output_file.split("/")[-1],
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             use_container_width=True
         )

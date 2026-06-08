@@ -53,49 +53,9 @@ def export_history(
             stock_df
         )
 
+        trend_export = trend_df
+
         sheet_name = "Daily_Data"
-
-        if use_default:
-
-            daily_dates = (
-                final_df["Date"]
-                .drop_duplicates()
-                .sort_values()
-            )
-
-            print(
-                f"Unique Trading Dates Available: {len(daily_dates)}"
-            )
-
-            last_90_dates = daily_dates.tail(90)
-
-            print(
-                f"Trading Dates Selected: {len(last_90_dates)}"
-            )
-
-            print(
-                f"First Trading Date: {last_90_dates.min()}"
-            )
-
-            print(
-                f"Last Trading Date: {last_90_dates.max()}"
-            )
-
-            final_df = final_df[
-                final_df["Date"].isin(
-                    last_90_dates
-                )
-            ]
-
-            trend_export = trend_df[
-                trend_df["Date"].isin(
-                    last_90_dates
-                )
-            ]
-
-        else:
-
-            trend_export = trend_df
 
     # -------------------------
     # Monthly
@@ -153,8 +113,9 @@ def export_history(
     )
 
     output_file = (
+        f"output/"
         f"mrg_trading_"
-        f"{frequency}_"
+        f"{frequency.capitalize()}_"
         f"{start_date}_to_"
         f"{end_date}_"
         f"{timestamp}.xlsx"
