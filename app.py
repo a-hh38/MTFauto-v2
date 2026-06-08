@@ -5,6 +5,7 @@ import sys
 sys.path.append("src")
 
 from build_history import build_history
+from build_monthly_history import build_monthly_history
 from export import export_history
 
 st.set_page_config(
@@ -43,7 +44,7 @@ frequency = st.selectbox(
 if frequency == "Daily":
 
     use_default = st.checkbox(
-        "Use Default Last 90 Days",
+        "Use Default Last 90 Trading Days",
         value=True
     )
 
@@ -75,6 +76,8 @@ if frequency == "Daily":
 
 else:
 
+    use_default = False
+
     start_date_str = st.text_input(
         "Start Date (DD-MM-YYYY)"
     )
@@ -105,11 +108,14 @@ if st.button(
         )
 
         # Hidden buffer for Daily mode
-        if frequency == "Daily":
+        if (
+            frequency == "Daily"
+            and use_default
+        ):
 
             start_date = (
                 start_date
-                - timedelta(days=110)
+                - timedelta(days=40)
             )
 
     except ValueError:
@@ -132,15 +138,29 @@ if st.button(
         "Building report..."
     ):
 
-        history_file, trend_file = build_history(
-            start_date,
-            end_date
-        )
+        if frequency == "Daily":
+
+            history_file, trend_file = (
+                build_history(
+                    start_date,
+                    end_date
+                )
+            )
+
+        else:
+
+            history_file, trend_file = (
+                build_monthly_history(
+                    start_date,
+                    end_date
+                )
+            )
 
         output_file = export_history(
             history_file,
             trend_file,
-            frequency
+            frequency,
+            use_default
         )
 
     st.success(

@@ -12,7 +12,8 @@ from frequency import (
 def export_history(
     history_file,
     trend_file,
-    frequency
+    frequency,
+    use_default=False
 ):
 
     frequency = frequency.lower()
@@ -52,27 +53,33 @@ def export_history(
             stock_df
         )
 
-        daily_dates = (
-            final_df["Date"]
-            .drop_duplicates()
-            .sort_values()
-        )
-
-        last_90_dates = daily_dates.tail(90)
-
-        final_df = final_df[
-            final_df["Date"].isin(
-                last_90_dates
-            )
-        ]
-
-        trend_export = trend_df[
-            trend_df["Date"].isin(
-                last_90_dates
-            )
-        ]
-
         sheet_name = "Daily_Data"
+
+        if use_default:
+
+            daily_dates = (
+                final_df["Date"]
+                .drop_duplicates()
+                .sort_values()
+            )
+
+            last_90_dates = daily_dates.tail(90)
+
+            final_df = final_df[
+                final_df["Date"].isin(
+                    last_90_dates
+                )
+            ]
+
+            trend_export = trend_df[
+                trend_df["Date"].isin(
+                    last_90_dates
+                )
+            ]
+
+        else:
+
+            trend_export = trend_df
 
     # -------------------------
     # Monthly
@@ -130,6 +137,7 @@ def export_history(
     )
 
     output_file = (
+        f"output/"
         f"mrg_trading_"
         f"{frequency.capitalize()}_"
         f"{start_date}_to_"
