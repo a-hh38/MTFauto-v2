@@ -1,6 +1,8 @@
 import streamlit as st
 from datetime import datetime, date, timedelta
 import sys
+import shutil
+from pathlib import Path
 
 sys.path.append("src")
 
@@ -128,6 +130,27 @@ if st.button(
         )
 
         st.stop()
+
+    # -------------------------
+    # Clear old files
+    # -------------------------
+
+    for folder in [
+        "data/raw",
+        "data/processed",
+        "output"
+    ]:
+
+        path = Path(folder)
+
+        if path.exists():
+
+            shutil.rmtree(path)
+
+        path.mkdir(
+            parents=True,
+            exist_ok=True
+        )
 
     with st.spinner(
         "Building report..."
